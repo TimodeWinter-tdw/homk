@@ -3394,6 +3394,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Jetstream_Input__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Jetstream/Input */ "./resources/js/Jetstream/Input.vue");
 /* harmony import */ var _Jetstream_InputError__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Jetstream/InputError */ "./resources/js/Jetstream/InputError.vue");
 /* harmony import */ var _Jetstream_Label__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Jetstream/Label */ "./resources/js/Jetstream/Label.vue");
+/* harmony import */ var _Jetstream_DialogModal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../Jetstream/DialogModal */ "./resources/js/Jetstream/DialogModal.vue");
+/* harmony import */ var _Jetstream_SecondaryButton__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Jetstream/SecondaryButton */ "./resources/js/Jetstream/SecondaryButton.vue");
 //
 //
 //
@@ -3481,6 +3483,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
 
 
 
@@ -3492,6 +3516,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Index",
   components: {
+    Button: _Jetstream_Button__WEBPACK_IMPORTED_MODULE_2__["default"],
     DangerButton: _Jetstream_DangerButton__WEBPACK_IMPORTED_MODULE_0__["default"],
     JetDangerButton: _Jetstream_DangerButton__WEBPACK_IMPORTED_MODULE_0__["default"],
     JetActionMessage: _Jetstream_ActionMessage__WEBPACK_IMPORTED_MODULE_1__["default"],
@@ -3499,10 +3524,65 @@ __webpack_require__.r(__webpack_exports__);
     AppLayout: _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_3__["default"],
     JetInput: _Jetstream_Input__WEBPACK_IMPORTED_MODULE_4__["default"],
     JetInputError: _Jetstream_InputError__WEBPACK_IMPORTED_MODULE_5__["default"],
-    JetLabel: _Jetstream_Label__WEBPACK_IMPORTED_MODULE_6__["default"]
+    JetLabel: _Jetstream_Label__WEBPACK_IMPORTED_MODULE_6__["default"],
+    JetDialogModal: _Jetstream_DialogModal__WEBPACK_IMPORTED_MODULE_7__["default"],
+    JetSecondaryButton: _Jetstream_SecondaryButton__WEBPACK_IMPORTED_MODULE_8__["default"]
   },
   props: {
-    items: Array
+    users: Array
+  },
+  data: function data() {
+    return {
+      create: {
+        user: {
+          id: null,
+          name: null
+        },
+        modal: false
+      },
+      create_form: this.$inertia.form({
+        amount: this.amount,
+        description: this.description
+      }, {
+        resetOnSuccess: true
+      }),
+      delete_form: this.$inertia.form({
+        '_method': 'DELETE'
+      })
+    };
+  },
+  methods: {
+    openModal: function openModal(user) {
+      this.create.user = user;
+      this.create.modal = true;
+    },
+    createItem: function createItem() {
+      var _this = this;
+
+      this.create_form.post('/debt-management/' + this.create.user.id, {
+        preserveScroll: true
+      }).then(function () {
+        if (!_this.create_form.hasErrors()) {
+          _this.create.modal = false;
+        }
+      });
+    },
+    deleteItem: function deleteItem(id, all) {
+      this.delete_form.post('/debt-management/' + id + '/' + all, {
+        preserveScroll: true
+      });
+    },
+    calcTotal: function calcTotal(items) {
+      var total = 0;
+
+      for (var i = 0; i < items.length; i++) {
+        total += items[i].amount;
+
+        if (i === items.length - 1) {
+          return total;
+        }
+      }
+    }
   }
 });
 
@@ -4413,7 +4493,9 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         resetOnSuccess: true
       }),
-      deleteForm: this.$inertia.form()
+      deleteForm: this.$inertia.form({
+        '_method': 'DELETE'
+      })
     };
   },
   methods: {
@@ -26011,7 +26093,7 @@ var render = function() {
                   staticClass:
                     "font-semibold text-xl text-gray-800 leading-tight"
                 },
-                [_vm._v("\n                Debt management\n            ")]
+                [_vm._v("\n            Debt management\n        ")]
               )
             ]
           },
@@ -26023,135 +26105,339 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "py-12" }, [
         _c("div", { staticClass: "max-w-7xl mx-auto sm:px-6 lg:px-8" }, [
-          _c("div", { staticClass: "grid gap-4 grid-cols-1 md:grid-cols-2" }, [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "bg-primary text-white p-4 overflow-hidden shadow-xl rounded-lg"
-              },
-              [
-                _c("h4", { staticClass: "card-title" }, [_vm._v("Your debt")]),
-                _vm._v(" "),
-                _c("table", { staticClass: "table-auto w-full" }, [
-                  _c("thead", [
-                    _c("tr", [
-                      _c("th", { staticClass: "py-2 text-left" }, [
-                        _vm._v("Aan")
-                      ]),
-                      _vm._v(" "),
-                      _c("th", { staticClass: "py-2 text-left" }, [
-                        _vm._v("Bedrag")
-                      ])
-                    ])
+          _c(
+            "div",
+            { staticClass: "grid gap-4 grid-cols-1 md:grid-cols-2" },
+            [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "bg-primary text-white p-4 overflow-hidden shadow-xl rounded-lg"
+                },
+                [
+                  _c("span", { staticClass: "card-title" }, [
+                    _vm._v("Your debt")
                   ]),
                   _vm._v(" "),
-                  _c("tbody", [
-                    _c("tr", [
-                      _c("td", { staticClass: "border w-3/5 px-4 py-2" }, [
-                        _vm._v("Martijn")
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "border w-2/5 px-4 py-2" }, [
-                        _vm._v("€2,00")
+                  _c("table", { staticClass: "table-auto w-full" }, [
+                    _c("thead", [
+                      _c("tr", [
+                        _c("th", { staticClass: "py-2 text-left" }, [
+                          _vm._v("Aan")
+                        ]),
+                        _vm._v(" "),
+                        _c("th", { staticClass: "py-2 text-left" }, [
+                          _vm._v("Bedrag")
+                        ])
                       ])
                     ]),
                     _vm._v(" "),
-                    _c("tr", [
-                      _c("td", { staticClass: "w-3/5" }),
+                    _c("tbody", [
+                      _c("tr", [
+                        _c("td", { staticClass: "border w-3/5 px-4 py-2" }, [
+                          _vm._v("Martijn")
+                        ]),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "border w-2/5 px-4 py-2" }, [
+                          _vm._v("€2,00")
+                        ])
+                      ]),
                       _vm._v(" "),
-                      _c("td", { staticClass: "border w-2/5 px-4 py-2" }, [
-                        _vm._v("total")
+                      _c("tr", [
+                        _c("td", { staticClass: "w-3/5" }),
+                        _vm._v(" "),
+                        _c("td", { staticClass: "border w-2/5 px-4 py-2" }, [
+                          _vm._v("total")
+                        ])
                       ])
                     ])
                   ])
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "bg-white p-4 overflow-hidden shadow-xl rounded-lg"
-              },
-              [
-                _c("h4", { staticClass: "card-title" }, [
-                  _vm._v("Martijn's debt to you")
-                ]),
-                _vm._v(" "),
-                _c("table", { staticClass: "table-auto w-full" }, [
-                  _c("thead", [
-                    _c("tr", [
-                      _c("th", { staticClass: "py-2 text-left" }, [
-                        _vm._v("Aan")
-                      ]),
-                      _vm._v(" "),
-                      _c("th", { staticClass: "py-2 text-left" }, [
-                        _vm._v("Bedrag")
-                      ]),
-                      _vm._v(" "),
-                      _c("th", { staticClass: "py-2" })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("tbody", [
-                    _c("tr", [
-                      _c("td", { staticClass: "border w-3/5 px-4 py-2" }, [
-                        _vm._v("Martijn")
-                      ]),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "border w-2/5 px-4 py-2" }, [
-                        _vm._v("€2,00")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        { staticClass: "border w-1/5 px-4 py-2" },
-                        [
-                          _c("danger-button", { staticClass: "ml-auto" }, [
-                            _c("i", { staticClass: "fas fa-trash" }),
-                            _vm._v(" DELETE")
-                          ])
-                        ],
-                        1
-                      )
+                ]
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.users, function(user) {
+                return _c(
+                  "div",
+                  {
+                    staticClass:
+                      "bg-white p-4 overflow-hidden shadow-xl rounded-lg"
+                  },
+                  [
+                    _c("span", { staticClass: "card-title" }, [
+                      _vm._v(_vm._s(user.name) + "'s debt to you")
                     ]),
                     _vm._v(" "),
-                    _c("tr", [
-                      _c("td", { staticClass: "w-3/5" }),
-                      _vm._v(" "),
-                      _c("td", { staticClass: "border w-2/5 px-4 py-2" }, [
-                        _vm._v("total")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        { staticClass: "border w-1/5 px-4 py-2" },
-                        [
-                          _c("danger-button", { staticClass: "ml-auto" }, [
-                            _c("i", { staticClass: "fas fa-trash" }),
-                            _vm._v(" ALL")
-                          ])
-                        ],
-                        1
-                      )
-                    ])
-                  ])
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "bg-white p-4 overflow-hidden shadow-xl rounded-lg"
-              },
-              [_c("p", [_vm._v("test")])]
-            )
-          ])
+                    _c(
+                      "span",
+                      { staticClass: "card-option" },
+                      [
+                        _c(
+                          "jet-button",
+                          {
+                            nativeOn: {
+                              click: function($event) {
+                                return _vm.openModal(user)
+                              }
+                            }
+                          },
+                          [_c("i", { staticClass: "fas fa-plus" })]
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    user.user_debt.length > 0
+                      ? _c("table", { staticClass: "table-auto w-full" }, [
+                          _c("thead", [
+                            _c("tr", [
+                              _c("th", { staticClass: "py-2 text-left" }, [
+                                _vm._v("Omschrijving")
+                              ]),
+                              _vm._v(" "),
+                              _c("th", { staticClass: "py-2 text-left" }, [
+                                _vm._v("Bedrag")
+                              ]),
+                              _vm._v(" "),
+                              _c("th", { staticClass: "py-2" })
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "tbody",
+                            [
+                              _vm._l(user.user_debt, function(item) {
+                                return _c("tr", [
+                                  _c(
+                                    "td",
+                                    { staticClass: "border w-3/5 px-4 py-2" },
+                                    [_vm._v(_vm._s(item.description))]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "td",
+                                    { staticClass: "border w-2/5 px-4 py-2" },
+                                    [_vm._v("€" + _vm._s(item.amount))]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "td",
+                                    { staticClass: "border w-1/5 px-4 py-2" },
+                                    [
+                                      _c(
+                                        "danger-button",
+                                        {
+                                          staticClass: "ml-auto",
+                                          nativeOn: {
+                                            click: function($event) {
+                                              return _vm.deleteItem(
+                                                item.id,
+                                                false
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c("i", {
+                                            staticClass: "fas fa-trash"
+                                          }),
+                                          _vm._v(" DELETE")
+                                        ]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ])
+                              }),
+                              _vm._v(" "),
+                              _c("tr", [
+                                _c("td", { staticClass: "w-3/5" }),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  { staticClass: "border w-2/5 px-4 py-2" },
+                                  [
+                                    _vm._v(
+                                      "€" +
+                                        _vm._s(_vm.calcTotal(user.user_debt))
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  { staticClass: "border w-1/5 px-4 py-2" },
+                                  [
+                                    _c(
+                                      "danger-button",
+                                      {
+                                        staticClass: "ml-auto",
+                                        nativeOn: {
+                                          click: function($event) {
+                                            return _vm.deleteItem(0, true)
+                                          }
+                                        }
+                                      },
+                                      [
+                                        _c("i", {
+                                          staticClass: "fas fa-trash"
+                                        }),
+                                        _vm._v(" ALL")
+                                      ]
+                                    )
+                                  ],
+                                  1
+                                )
+                              ])
+                            ],
+                            2
+                          )
+                        ])
+                      : _c("p", { staticClass: "mt-10" }, [
+                          _vm._v(_vm._s(user.name) + " has no debt to you.")
+                        ])
+                  ]
+                )
+              })
+            ],
+            2
+          )
         ])
-      ])
-    ]
+      ]),
+      _vm._v(" "),
+      _c("jet-dialog-modal", {
+        attrs: { show: _vm.create.modal },
+        on: {
+          close: function($event) {
+            _vm.create.modal = false
+          }
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "title",
+            fn: function() {
+              return [
+                _vm._v(
+                  "\n            Create item for " +
+                    _vm._s(_vm.create.user.name) +
+                    "\n        "
+                )
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "content",
+            fn: function() {
+              return [
+                _c(
+                  "div",
+                  { staticClass: "mt-4" },
+                  [
+                    _c("jet-label", {
+                      attrs: { for: "amount", value: "Amount" }
+                    }),
+                    _vm._v(" "),
+                    _c("jet-input", {
+                      ref: "amount",
+                      staticClass: "mt-1 block w-full",
+                      attrs: {
+                        id: "amount",
+                        type: "number",
+                        step: "any",
+                        autocomplete: "amount"
+                      },
+                      model: {
+                        value: _vm.create_form.amount,
+                        callback: function($$v) {
+                          _vm.$set(_vm.create_form, "amount", $$v)
+                        },
+                        expression: "create_form.amount"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("jet-input-error", {
+                      staticClass: "mt-2",
+                      attrs: { message: _vm.create_form.error("amount") }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "mt-4" },
+                  [
+                    _c("jet-label", {
+                      attrs: { for: "description", value: "Description" }
+                    }),
+                    _vm._v(" "),
+                    _c("jet-input", {
+                      ref: "description",
+                      staticClass: "mt-1 block w-full",
+                      attrs: {
+                        id: "description",
+                        type: "text",
+                        autocomplete: "description"
+                      },
+                      model: {
+                        value: _vm.create_form.description,
+                        callback: function($$v) {
+                          _vm.$set(_vm.create_form, "description", $$v)
+                        },
+                        expression: "create_form.description"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("jet-input-error", {
+                      staticClass: "mt-2",
+                      attrs: { message: _vm.create_form.error("description") }
+                    })
+                  ],
+                  1
+                )
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "footer",
+            fn: function() {
+              return [
+                _c(
+                  "jet-secondary-button",
+                  {
+                    nativeOn: {
+                      click: function($event) {
+                        _vm.create.modal = false
+                      }
+                    }
+                  },
+                  [_vm._v("\n                Nevermind\n            ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "jet-button",
+                  {
+                    staticClass: "ml-2",
+                    class: { "opacity-25": _vm.create_form.processing },
+                    attrs: { disabled: _vm.create_form.processing },
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.createItem()
+                      }
+                    }
+                  },
+                  [_vm._v("\n                Opslaan\n            ")]
+                )
+              ]
+            },
+            proxy: true
+          }
+        ])
+      })
+    ],
+    1
   )
 }
 var staticRenderFns = []

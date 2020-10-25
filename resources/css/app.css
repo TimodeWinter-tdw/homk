@@ -3,11 +3,25 @@
 @import 'tailwindcss/utilities';
 
 @layer base {
-    h4 {
+    .card-title {
+        float: left;
         font-size: 20px;
     }
 }
 
+.card-title {
+    float: left;
+    font-size: 20px;
+}
+
+.card-option {
+    float: right;
+}
+
 .bg-primary {
     background-color: #6875f5;
+}
+
+.text-primary {
+    color: #6875f5;
 }

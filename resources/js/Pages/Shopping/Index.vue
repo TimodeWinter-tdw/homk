@@ -102,7 +102,9 @@ export default {
             }, {
                 resetOnSuccess: true
             }),
-            deleteForm: this.$inertia.form()
+            deleteForm: this.$inertia.form({
+                '_method': 'DELETE'
+            })
         }
     },
     methods: {
