@@ -46,6 +46,12 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereTwoFactorSecret($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\DebtItem[] $debtItems
+ * @property-read int|null $debt_items_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shopping[] $shoppingItems
+ * @property-read int|null $shopping_items_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\DebtItem[] $userDebt
+ * @property-read int|null $user_debt_count
  */
 class User extends Authenticatable
 {
@@ -95,4 +101,19 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function shoppingItems()
+    {
+        return $this->hasMany(Shopping::class);
+    }
+
+    public function debtItems()
+    {
+        return $this->hasMany(DebtItem::class, 'creator_id', 'id');
+    }
+
+    public function userDebt()
+    {
+        return $this->hasMany(DebtItem::class, 'indebted_user', 'id');
+    }
 }
