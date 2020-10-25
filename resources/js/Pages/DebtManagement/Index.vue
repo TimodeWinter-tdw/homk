@@ -13,24 +13,27 @@
                     <div class="bg-primary text-white p-4 overflow-hidden shadow-xl rounded-lg">
                         <span class="card-title">Your debt</span>
 
-                        <table class="table-auto w-full">
+                        <table class="table-auto w-full" v-if="personal.user_debt !== undefined && personal.user_debt.length > 0">
                             <thead>
                                 <tr>
                                     <th class="py-2 text-left">Aan</th>
+                                    <th class="py-2 text-left">Omschrijving</th>
                                     <th class="py-2 text-left">Bedrag</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="border w-3/5 px-4 py-2">Martijn</td>
-                                    <td class="border w-2/5 px-4 py-2">&euro;2,00</td>
+                                <tr v-for="item of personal.user_debt">
+                                    <td class="border w-2/5 px-4 py-2">{{item.creator.name}}</td>
+                                    <td class="border w-3/5 px-4 py-2">{{item.description}}</td>
+                                    <td class="border w-2/5 px-4 py-2">&euro;{{item.amount}}</td>
                                 </tr>
                                 <tr>
                                     <td class="w-3/5"></td>
-                                    <td class="border w-2/5 px-4 py-2">total</td>
+                                    <td class="border w-2/5 px-4 py-2">&euro;{{calcTotal(personal.user_debt)}}</td>
                                 </tr>
                             </tbody>
                         </table>
+                        <p class="mt-10" v-else>You don't have any debt. Nicely done dickhead!</p>
 
                     </div>
 
@@ -38,7 +41,7 @@
                         <span class="card-title">{{user.name}}'s debt to you</span>
                         <span class="card-option"><jet-button @click.native="openModal(user)"><i class="fas fa-plus"></i></jet-button></span>
 
-                        <table class="table-auto w-full" v-if="user.user_debt.length > 0">
+                        <table class="table-auto w-full" v-if="user.user_debt !== undefined && user.user_debt.length > 0">
                             <thead>
                             <tr>
                                 <th class="py-2 text-left">Omschrijving</th>
@@ -133,6 +136,7 @@ export default {
         JetSecondaryButton,
     },
     props: {
+        personal: Object,
         users: Array
     },
     data() {

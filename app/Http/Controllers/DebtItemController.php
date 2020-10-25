@@ -20,8 +20,11 @@ class DebtItemController extends Controller
      */
     public function index() : Response
     {
+        $user = Auth::user();
+        $user->load('userDebt.creator');
         return Inertia::render('DebtManagement/Index', [
-            'users' => User::where('id', '!=', Auth::id())->with('userDebt', 'debtItems')->get(),
+            'personal' => $user,
+            'users' => User::where('id', '!=', Auth::id())->with('userDebt')->get(),
         ]);
     }
 

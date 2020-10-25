@@ -3502,6 +3502,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -3529,6 +3532,7 @@ __webpack_require__.r(__webpack_exports__);
     JetSecondaryButton: _Jetstream_SecondaryButton__WEBPACK_IMPORTED_MODULE_8__["default"]
   },
   props: {
+    personal: Object,
     users: Array
   },
   data: function data() {
@@ -26120,39 +26124,73 @@ var render = function() {
                     _vm._v("Your debt")
                   ]),
                   _vm._v(" "),
-                  _c("table", { staticClass: "table-auto w-full" }, [
-                    _c("thead", [
-                      _c("tr", [
-                        _c("th", { staticClass: "py-2 text-left" }, [
-                          _vm._v("Aan")
+                  _vm.personal.user_debt !== undefined &&
+                  _vm.personal.user_debt.length > 0
+                    ? _c("table", { staticClass: "table-auto w-full" }, [
+                        _c("thead", [
+                          _c("tr", [
+                            _c("th", { staticClass: "py-2 text-left" }, [
+                              _vm._v("Aan")
+                            ]),
+                            _vm._v(" "),
+                            _c("th", { staticClass: "py-2 text-left" }, [
+                              _vm._v("Omschrijving")
+                            ]),
+                            _vm._v(" "),
+                            _c("th", { staticClass: "py-2 text-left" }, [
+                              _vm._v("Bedrag")
+                            ])
+                          ])
                         ]),
                         _vm._v(" "),
-                        _c("th", { staticClass: "py-2 text-left" }, [
-                          _vm._v("Bedrag")
-                        ])
+                        _c(
+                          "tbody",
+                          [
+                            _vm._l(_vm.personal.user_debt, function(item) {
+                              return _c("tr", [
+                                _c(
+                                  "td",
+                                  { staticClass: "border w-2/5 px-4 py-2" },
+                                  [_vm._v(_vm._s(item.creator.name))]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  { staticClass: "border w-3/5 px-4 py-2" },
+                                  [_vm._v(_vm._s(item.description))]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  { staticClass: "border w-2/5 px-4 py-2" },
+                                  [_vm._v("€" + _vm._s(item.amount))]
+                                )
+                              ])
+                            }),
+                            _vm._v(" "),
+                            _c("tr", [
+                              _c("td", { staticClass: "w-3/5" }),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                { staticClass: "border w-2/5 px-4 py-2" },
+                                [
+                                  _vm._v(
+                                    "€" +
+                                      _vm._s(
+                                        _vm.calcTotal(_vm.personal.user_debt)
+                                      )
+                                  )
+                                ]
+                              )
+                            ])
+                          ],
+                          2
+                        )
                       ])
-                    ]),
-                    _vm._v(" "),
-                    _c("tbody", [
-                      _c("tr", [
-                        _c("td", { staticClass: "border w-3/5 px-4 py-2" }, [
-                          _vm._v("Martijn")
-                        ]),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "border w-2/5 px-4 py-2" }, [
-                          _vm._v("€2,00")
-                        ])
-                      ]),
-                      _vm._v(" "),
-                      _c("tr", [
-                        _c("td", { staticClass: "w-3/5" }),
-                        _vm._v(" "),
-                        _c("td", { staticClass: "border w-2/5 px-4 py-2" }, [
-                          _vm._v("total")
-                        ])
+                    : _c("p", { staticClass: "mt-10" }, [
+                        _vm._v("You don't have any debt. Nicely done dickhead!")
                       ])
-                    ])
-                  ])
                 ]
               ),
               _vm._v(" "),
@@ -26187,7 +26225,7 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    user.user_debt.length > 0
+                    user.user_debt !== undefined && user.user_debt.length > 0
                       ? _c("table", { staticClass: "table-auto w-full" }, [
                           _c("thead", [
                             _c("tr", [
