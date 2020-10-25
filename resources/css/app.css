@@ -1,3 +1,13 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+@layer base {
+    h4 {
+        font-size: 20px;
+    }
+}
+
+.bg-primary {
+    background-color: #6875f5;
+}

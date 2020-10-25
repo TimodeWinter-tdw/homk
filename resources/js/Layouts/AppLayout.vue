@@ -20,6 +20,9 @@
                             <jet-nav-link :href="route('shopping')" :active="$page.currentRouteName == 'shopping'">
                                 Shopping
                             </jet-nav-link>
+                            <jet-nav-link :href="route('debt-management')" :active="$page.currentRouteName == 'debt-management'">
+                                Debt management
+                            </jet-nav-link>
                         </div>
                     </div>
 
@@ -86,6 +89,9 @@
                     </jet-responsive-nav-link>
                     <jet-responsive-nav-link :href="route('shopping')" :active="$page.currentRouteName == 'shopping'">
                         Shopping
+                    </jet-responsive-nav-link>
+                    <jet-responsive-nav-link :href="route('debt-management')" :active="$page.currentRouteName == 'debt-management'">
+                        Debt management
                     </jet-responsive-nav-link>
                 </div>
 

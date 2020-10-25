@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Shopping;
 use Auth;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Redirect;
@@ -24,9 +25,9 @@ class ShoppingController extends Controller
      * Create a new shopping list item
      *
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function create(Request $request)
+    public function create(Request $request) : RedirectResponse
     {
         $request->validate([
             'product' => ['string', 'max:255', 'required'],
@@ -40,13 +41,18 @@ class ShoppingController extends Controller
         return Redirect::route('shopping');
     }
 
-    public function delete(int $item) {
+    /**
+     * @param int $item
+     * @return RedirectResponse
+     */
+    public function delete(int $item) : RedirectResponse
+    {
         try {
             $item = Shopping::find($item);
             $item->delete();
         } catch (\Exception $e) {
             // Share a flash message
-            Inertia::share('flash', function() use ($e) {
+            Inertia::share('flash', function () use ($e) {
                 return [
                     'message' => $e->getMessage()
                 ];
