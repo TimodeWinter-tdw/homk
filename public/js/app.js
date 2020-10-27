@@ -18866,6 +18866,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -18894,7 +18898,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: {
     personal: Object,
-    users: Array
+    users: Array,
+    flash: String
   },
   data: function data() {
     return {
@@ -19971,13 +19976,18 @@ __webpack_require__.r(__webpack_exports__);
     JetDialogModal: _Jetstream_DialogModal__WEBPACK_IMPORTED_MODULE_10__["default"],
     JetSecondaryButton: _Jetstream_SecondaryButton__WEBPACK_IMPORTED_MODULE_11__["default"]
   },
-  props: {},
+  props: {
+    flash: String
+  },
   data: function data() {
     return {
       calendarOptions: {
         plugins: [_fullcalendar_daygrid__WEBPACK_IMPORTED_MODULE_8__["default"], _fullcalendar_interaction__WEBPACK_IMPORTED_MODULE_9__["default"]],
         initialView: 'dayGridMonth',
-        dateClick: this.dateClick
+        eventColor: '#6875f5',
+        events: [],
+        dateClick: this.dateClick,
+        eventClick: this.eventClick
       },
       form: this.$inertia.form({
         title: this.title,
@@ -19990,17 +20000,20 @@ __webpack_require__.r(__webpack_exports__);
       }),
       modal: {
         show: false,
-        event: {
-          "new": false,
-          id: null
-        }
+        "new": false,
+        event: null
       }
     };
   },
   methods: {
     dateClick: function dateClick(info) {
       this.modal.show = true;
-      this.modal.event["new"] = true;
+      this.modal["new"] = true;
+    },
+    eventClick: function eventClick(info) {
+      this.modal.show = true;
+      this.modal["new"] = false;
+      this.event = info.event;
     },
     saveEvent: function saveEvent(isNew, id) {}
   }
@@ -40416,7 +40429,8 @@ var render = function() {
               }
             ],
             staticClass:
-              "fixed top-0 inset-x-0 px-4 pt-6 sm:px-0 sm:flex sm:items-top sm:justify-center"
+              "fixed top-0 inset-x-0 px-4 pt-6 sm:px-0 sm:flex sm:items-top sm:justify-center",
+            staticStyle: { "z-index": "999" }
           },
           [
             _c(
@@ -42286,6 +42300,12 @@ var render = function() {
       ])
     },
     [
+      _vm._v(" "),
+      _vm.flash !== undefined && _vm.flash.message !== undefined
+        ? _c("div", { staticClass: "alert" }, [
+            _vm._v("\n        " + _vm._s(_vm.flash.message) + "\n    ")
+          ])
+        : _vm._e(),
       _vm._v(" "),
       _c("div", { staticClass: "py-12" }, [
         _c("div", { staticClass: "max-w-7xl mx-auto sm:px-6 lg:px-8" }, [
@@ -44305,10 +44325,7 @@ var render = function() {
                     attrs: { disabled: _vm.form.processing },
                     nativeOn: {
                       click: function($event) {
-                        return _vm.saveEvent(
-                          _vm.modal.event.new,
-                          _vm.modal.event.id
-                        )
+                        return _vm.saveEvent(_vm.modal.new, _vm.modal.event.id)
                       }
                     }
                   },

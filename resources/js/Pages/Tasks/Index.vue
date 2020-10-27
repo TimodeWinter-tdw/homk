@@ -35,7 +35,7 @@
                     Nevermind
                 </jet-secondary-button>
 
-                <jet-button class="ml-2" @click.native="saveEvent(modal.event.new, modal.event.id)" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <jet-button class="ml-2" @click.native="saveEvent(modal.new, modal.event.id)" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Opslaan
                 </jet-button>
             </template>
@@ -72,14 +72,17 @@ export default {
         JetSecondaryButton,
     },
     props: {
-
+        flash: String
     },
     data() {
         return {
             calendarOptions: {
                 plugins: [dayGridPlugin, interactionPlugin],
                 initialView: 'dayGridMonth',
-                dateClick: this.dateClick
+                eventColor: '#6875f5',
+                events: [],
+                dateClick: this.dateClick,
+                eventClick: this.eventClick
             },
             form: this.$inertia.form({
                 title: this.title,
@@ -92,17 +95,20 @@ export default {
             }),
             modal: {
                 show: false,
-                event: {
-                    new: false,
-                    id: null
-                }
+                new: false,
+                event: null
             },
         }
     },
     methods: {
         dateClick(info) {
             this.modal.show = true;
-            this.modal.event.new = true;
+            this.modal.new = true;
+        },
+        eventClick(info) {
+            this.modal.show = true;
+            this.modal.new = false;
+            this.event = info.event;
         },
         saveEvent(isNew, id) {
 
