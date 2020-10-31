@@ -27,7 +27,34 @@
             </template>
 
             <template #content>
-                <p>test</p>
+                <jet-label for="color" value="Color" />
+                <v-swatches id="color" ref="color" v-model="form.color"></v-swatches>
+                <jet-input-error :message="form.error('color')" class="mt-2" />
+
+                <jet-label for="title" value="Title" />
+                <jet-input id="title" type="text" class="mt-1 block w-full" v-model="form.title" ref="title" autocomplete="title" />
+                <jet-input-error :message="form.error('title')" class="mt-2" />
+
+                <jet-label for="description" value="Description" />
+                <jet-input id="description" type="text" class="mt-1 block w-full" v-model="form.description" ref="description" autocomplete="description" />
+                <jet-input-error :message="form.error('description')" class="mt-2" />
+
+                <jet-label for="joinable" value="Joinable" />
+                <input id="joinable" type="checkbox" class="mt-1 block" v-model="form.joinable" ref="joinable" autocomplete="joinable" />
+                <jet-input-error :message="form.error('joinable')" class="mt-2" />
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <jet-label for="start" value="Start" />
+                        <jet-input id="start" type="date" class="mt-1 block w-full" v-model="form.start" ref="start" autocomplete="start" />
+                        <jet-input-error :message="form.error('start')" class="mt-2" />
+                    </div>
+                    <div>
+                        <jet-label for="end" value="End" />
+                        <jet-input id="end" type="date" class="mt-1 block w-full" v-model="form.end" ref="end" autocomplete="end" />
+                        <jet-input-error :message="form.error('end')" class="mt-2" />
+                    </div>
+                </div>
             </template>
 
             <template #footer>
@@ -56,6 +83,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import JetDialogModal from "../../Jetstream/DialogModal";
 import JetSecondaryButton from "../../Jetstream/SecondaryButton";
+import VSwatches from 'vue-swatches';
 
 export default {
     name: "Index",
@@ -70,6 +98,7 @@ export default {
         JetLabel,
         JetDialogModal,
         JetSecondaryButton,
+        VSwatches,
     },
     props: {
         flash: String
@@ -85,11 +114,12 @@ export default {
                 eventClick: this.eventClick
             },
             form: this.$inertia.form({
+                color: '#707070',
                 title: this.title,
                 description: this.description,
+                joinable: this.joinable,
                 start: this.date,
-                end: this.end,
-                category: this.category
+                end: this.end
             }, {
                 resetOnSuccess: true
             }),
