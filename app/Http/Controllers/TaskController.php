@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Tasks\Create;
 use App\Models\Task;
+use App\Models\TaskParticipants;
+use Auth;
 use Exception;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Redirect;
 
@@ -16,27 +18,51 @@ class TaskController extends Controller
      */
     public function index()
     {
+        $tasks = Task::with('participants')
+            ->get();
+
+        $out = [];
+        foreach ($tasks as $task) {
+            $out[$task->id] = $task;
+        }
+
         return Inertia::render('Tasks/Index', [
-            'tasks' => Task::all()
+            'searchable_tasks' => $out,
+            'tasks' => $tasks,
+            'user_id' => Auth::id()
         ]);
     }
 
     /**
      * Create a new shopping list item
      *
-     * @param Request $request
+     * @param Create $request
      * @return RedirectResponse
      */
-    public function create(Request $request) : RedirectResponse
+    public function create(Create $request) : RedirectResponse
     {
-
+        $task = Task::make($request->validated());
+        $task->end = $request->input('full_day') === true ? null : $task->end;
+        $task->user_id = Auth::id();
+        $task->save();
 
         return Redirect::route('tasks');
     }
 
-    public function update(Request $request) : RedirectResponse
+    public function update(Create $request, int $id) : RedirectResponse
     {
+        $task = Task::find($id);
+        if($task === false) {
+            return Redirect::route('tasks')->with('error', 'Task can\'t be found.');
+        }
 
+        if ($task->user_id !== Auth::id()) {
+            return Redirect::route('tasks')->with('error', 'You can only edit tasks that you have created.');
+        }
+
+        $task->update($request->validated());
+        $task->end = $request->input('full_day') === true ? null : $task->end;
+        $task->save();
         return Redirect::route('tasks');
     }
 
@@ -48,14 +74,40 @@ class TaskController extends Controller
     {
         try {
             $task = Task::find($task);
+            if ($task === null) {
+                return Redirect::route('tasks')->with('error', 'Task can\'t be found.');
+            }
             $task->delete();
         } catch (Exception $e) {
-            // Share a flash message
-            Inertia::share('flash', function () use ($e) {
-                return [
-                    'message' => $e->getMessage()
-                ];
-            });
+            return Redirect::route('tasks')->with('error', $e->getMessage());
+        }
+
+        return Redirect::route('tasks');
+    }
+
+    /**
+     * @param int $task
+     * @return RedirectResponse
+     */
+    public function join(int $task) : RedirectResponse
+    {
+        $participating = TaskParticipants::whereTaskId($task)
+            ->where('user_id', Auth::id())
+            ->first();
+
+        if ($participating === null) {
+            // Create the record
+            TaskParticipants::create([
+                'user_id' => Auth::id(),
+                'task_id' => $task
+            ]);
+        }else {
+            // Delete the record
+            try {
+                $participating->delete();
+            } catch (Exception $e) {
+                return Redirect::route('tasks')->with('error', $e->getMessage());
+            }
         }
 
         return Redirect::route('tasks');

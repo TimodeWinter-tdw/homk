@@ -32,6 +32,7 @@
         "@fullcalendar/interaction": "^5.3.1",
         "@fullcalendar/vue": "^5.3.1",
         "sw-precache-webpack-plugin": "^1.0.0",
+        "v-calendar": "^2.0.1",
         "vue-swatches": "^2.1.0"
     }
 }
