@@ -51,12 +51,7 @@ class ShoppingController extends Controller
             $item = Shopping::find($item);
             $item->delete();
         } catch (\Exception $e) {
-            // Share a flash message
-            Inertia::share('flash', function () use ($e) {
-                return [
-                    'message' => $e->getMessage()
-                ];
-            });
+            return Redirect::route('shopping')->with('error', $e->getMessage());
         }
 
         return Redirect::route('shopping');

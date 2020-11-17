@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DebtItemController;
 use App\Http\Controllers\ShoppingController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,5 +33,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
         Route::get('', [DebtItemController::class, 'index'])->name('debt-management');
         Route::post('{id}', [DebtItemController::class, 'create'])->name('debt.create');
         Route::delete('{id}/{deleteAll}', [DebtItemController::class, 'delete'])->name('debt.delete');
+    });
+
+    Route::prefix('tasks')->group(function () {
+        Route::get('', [TaskController::class, 'index'])->name('tasks');
+        Route::post('', [TaskController::class, 'create'])->name('tasks.create');
+        Route::put('{id}', [TaskController::class, 'update'])->name('tasks.create');
+        Route::put('{id}/join', [TaskController::class, 'join'])->name('tasks.join');
     });
 });
