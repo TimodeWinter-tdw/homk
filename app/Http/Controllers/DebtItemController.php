@@ -64,12 +64,7 @@ class DebtItemController extends Controller
                 $item->delete();
             }
         } catch (Exception $e) {
-            // Share a flash message
-            Inertia::share('flash', function () use ($e) {
-                return [
-                    'message' => $e->getMessage()
-                ];
-            });
+            return Redirect::route('debt-management')->with('error', $e->getMessage());
         }
 
         return Redirect::route('debt-management');

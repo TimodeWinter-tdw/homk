@@ -6,6 +6,10 @@
             </h2>
         </template>
 
+        <div v-if="flash !== undefined && flash.message !== undefined" class="alert">
+            {{ flash.message }}
+        </div>
+
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
@@ -137,7 +141,8 @@ export default {
     },
     props: {
         personal: Object,
-        users: Array
+        users: Array,
+        flash: String
     },
     data() {
         return {

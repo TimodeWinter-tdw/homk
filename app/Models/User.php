@@ -52,6 +52,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read int|null $shopping_items_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\DebtItem[] $userDebt
  * @property-read int|null $user_debt_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Task[] $tasks
+ * @property-read int|null $tasks_count
  */
 class User extends Authenticatable
 {
@@ -115,5 +117,10 @@ class User extends Authenticatable
     public function userDebt()
     {
         return $this->hasMany(DebtItem::class, 'indebted_user', 'id');
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
     }
 }
