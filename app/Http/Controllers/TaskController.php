@@ -57,7 +57,7 @@ class TaskController extends Controller
             return Redirect::route('tasks')->with('error', 'Task can\'t be found.');
         }
 
-        if ($task->user_id !== Auth::id()) {
+        if ((int)$task->user_id !== Auth::id()) {
             return Redirect::route('tasks')->with('error', 'You can only edit tasks that you have created.');
         }
 
