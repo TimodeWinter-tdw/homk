@@ -22,11 +22,11 @@
 
         <jet-dialog-modal :show="modal.show" @close="modal.show = false">
             <template #title>
-                <span v-if="modal.event_by_user === user_id || modal.event_by_user === null">Create a new calendar event</span>
+                <span v-if="modal.event_by_user == user_id || modal.event_by_user === null">Create a new calendar event</span>
                 <span v-else>View calendar event</span>
             </template>
 
-            <template v-if="modal.event_by_user === user_id || modal.event_by_user === null" #content>
+            <template v-if="modal.event_by_user == user_id || modal.event_by_user === null" #content>
                 <jet-label for="color" value="Color" />
                 <v-swatches id="color" ref="color" v-model="form.color"></v-swatches>
                 <jet-input-error :message="form.error('color')" class="mt-2" />
@@ -99,7 +99,8 @@
             <template #footer>
                 <jet-danger-button class="float-left"
                                    @click.native="deleteEvent(modal.event.id)"
-                                   v-if="modal.event_by_user === user_id || modal.event_by_user === null">
+                                   v-if="modal.event_by_user == user_id || modal.event_by_user === null
+                                    && !modal.new">
                     Delete
                 </jet-danger-button>
 
@@ -111,7 +112,7 @@
                             @click.native="saveEvent(modal.new, modal.event.id)"
                             :class="{ 'opacity-25': form.processing }"
                             :disabled="form.processing"
-                            v-if="modal.event_by_user === user_id || modal.event_by_user === null">
+                            v-if="modal.event_by_user == user_id || modal.event_by_user === null">
                     Opslaan
                 </jet-button>
                 <jet-button class="ml-2"

@@ -43,6 +43,7 @@ class TaskController extends Controller
     {
         $task = Task::make($request->validated());
         $task->end = $request->input('full_day') === true ? null : $task->end;
+        $task->joinable = $request->input('joinable') === true;
         $task->user_id = Auth::id();
         $task->save();
 
@@ -56,7 +57,7 @@ class TaskController extends Controller
             return Redirect::route('tasks')->with('error', 'Task can\'t be found.');
         }
 
-        if ($task->user_id !== Auth::id()) {
+        if ((int)$task->user_id !== Auth::id()) {
             return Redirect::route('tasks')->with('error', 'You can only edit tasks that you have created.');
         }
 
