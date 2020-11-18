@@ -38,7 +38,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     Route::prefix('tasks')->group(function () {
         Route::get('', [TaskController::class, 'index'])->name('tasks');
         Route::post('', [TaskController::class, 'create'])->name('tasks.create');
-        Route::put('{id}', [TaskController::class, 'update'])->name('tasks.create');
+        Route::put('{id}', [TaskController::class, 'update'])->name('tasks.update');
         Route::put('{id}/join', [TaskController::class, 'join'])->name('tasks.join');
     });
 });
