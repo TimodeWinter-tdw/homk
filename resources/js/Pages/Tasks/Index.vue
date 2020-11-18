@@ -26,7 +26,7 @@
                 <span v-else>View calendar event</span>
             </template>
 
-            <template v-if="modal.event_by_user === user_id || modal.event_by_user === null" #content>
+            <template v-if="modal.event_by_user == user_id || modal.event_by_user === null" #content>
                 <jet-label for="color" value="Color" />
                 <v-swatches id="color" ref="color" v-model="form.color"></v-swatches>
                 <jet-input-error :message="form.error('color')" class="mt-2" />
@@ -99,7 +99,8 @@
             <template #footer>
                 <jet-danger-button class="float-left"
                                    @click.native="deleteEvent(modal.event.id)"
-                                   v-if="modal.event_by_user === user_id || modal.event_by_user === null">
+                                   v-if="modal.event_by_user === user_id || modal.event_by_user === null
+                                    && !modal.new">
                     Delete
                 </jet-danger-button>
 

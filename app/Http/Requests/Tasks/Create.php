@@ -25,7 +25,7 @@ class Create extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
+            'description' => ['nullable', 'string'],
             'color' => ['required', 'string', 'max:7'],
             'start' => ['required', 'string'],
             'end' => ['nullable', 'string'],
