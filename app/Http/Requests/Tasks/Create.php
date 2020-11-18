@@ -29,7 +29,7 @@ class Create extends FormRequest
             'color' => ['required', 'string', 'max:7'],
             'start' => ['required', 'string'],
             'end' => ['nullable', 'string'],
-            'joinable' => ['required', 'boolean'],
+            'joinable' => ['nullable', 'boolean'],
             'full_day' => ['nullable', 'boolean']
         ];
     }
