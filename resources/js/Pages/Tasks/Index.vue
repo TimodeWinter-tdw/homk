@@ -97,6 +97,12 @@
             </template>
 
             <template #footer>
+                <jet-danger-button class="float-left"
+                                   @click.native="deleteEvent(modal.event.id)"
+                                   v-if="modal.event_by_user === user_id || modal.event_by_user === null">
+                    Delete
+                </jet-danger-button>
+
                 <jet-secondary-button @click.native="modal.show = false">
                     Nevermind
                 </jet-secondary-button>
@@ -276,6 +282,14 @@ export default {
                     this.modal.show = false;
                 }
             });
+        },
+        deleteEvent(task) {
+            this.$inertia.delete('/tasks/'+task, {
+                preserveScroll: true,
+                onSuccess: () => {
+                    this.modal.show = false;
+                }
+            })
         }
     }
 }
