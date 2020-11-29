@@ -59,7 +59,7 @@ class DebtItemController extends Controller
                 ->get();
         }else {
             $item = DebtItem::find($id);
-            if ($item !== null && $item->creator_id === Auth::id()) {
+            if ($item !== null && (int)$item->creator_id === Auth::id()) {
                 $items[] = $item;
             }
         }
