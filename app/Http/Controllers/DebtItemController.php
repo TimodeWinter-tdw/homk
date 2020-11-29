@@ -45,13 +45,18 @@ class DebtItemController extends Controller
 
     /**
      * @param int $id
+     * @param string $deleteAll
      * @return RedirectResponse
      */
-    public function delete(int $id, bool $deleteAll) : RedirectResponse
+    public function delete(int $id, string $deleteAll) : RedirectResponse
     {
+        $deleteAll = $deleteAll === 'false' ? false : true;
+
         $items = [];
         if ($deleteAll) {
-            $items = DebtItem::whereCreatorId(Auth::id())->get();
+            $items = DebtItem::whereCreatorId(Auth::id())
+                ->where('indebted_user', $id)
+                ->get();
         }else {
             $item = DebtItem::find($id);
             if ($item !== null && $item->creator_id === Auth::id()) {
