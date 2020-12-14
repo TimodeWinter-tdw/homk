@@ -109,7 +109,7 @@ export default {
     },
     methods: {
         save() {
-            this.form.post('/shopping/', {
+            this.form.post('/shopping', {
                 preserveScroll: true
             });
         },

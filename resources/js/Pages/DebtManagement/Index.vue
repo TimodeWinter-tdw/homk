@@ -65,7 +65,7 @@
                                     <td class="w-3/5"></td>
                                     <td class="border w-2/5 px-4 py-2">&euro;{{calcTotal(user.user_debt)}}</td>
                                     <td class="border w-1/5 px-4 py-2">
-                                        <danger-button class="ml-auto" @click.native="deleteItem(0, true)"><i class="fas fa-trash"></i>&nbsp;ALL</danger-button>
+                                        <danger-button class="ml-auto" @click.native="deleteItem(user.id, true)"><i class="fas fa-trash"></i>&nbsp;ALL</danger-button>
                                     </td>
                                 </tr>
                             </tbody>
