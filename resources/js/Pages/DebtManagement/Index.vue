@@ -45,7 +45,7 @@
                         <span class="card-title">{{user.name}}'s debt to you</span>
                         <span class="card-option"><jet-button @click.native="openModal(user)"><i class="fas fa-plus"></i></jet-button></span>
 
-                        <table class="table-auto w-full" v-if="user.user_debt !== undefined && user.user_debt.length > 0">
+                        <table class="table-auto w-full" v-if="debt[user.id] !== undefined && debt[user.id].length > 0">
                             <thead>
                             <tr>
                                 <th class="py-2 text-left">Omschrijving</th>
@@ -54,7 +54,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="item of user.user_debt">
+                                <tr v-for="item of debt[user.id]">
                                     <td class="border w-3/5 px-4 py-2">{{item.description}}</td>
                                     <td class="border w-2/5 px-4 py-2">&euro;{{item.amount}}</td>
                                     <td class="border w-1/5 px-4 py-2">
@@ -63,7 +63,7 @@
                                 </tr>
                                 <tr>
                                     <td class="w-3/5"></td>
-                                    <td class="border w-2/5 px-4 py-2">&euro;{{calcTotal(user.user_debt)}}</td>
+                                    <td class="border w-2/5 px-4 py-2">&euro;{{calcTotal(debt[user.id])}}</td>
                                     <td class="border w-1/5 px-4 py-2">
                                         <danger-button class="ml-auto" @click.native="deleteItem(user.id, true)"><i class="fas fa-trash"></i>&nbsp;ALL</danger-button>
                                     </td>
@@ -142,7 +142,8 @@ export default {
     props: {
         personal: Object,
         users: Array,
-        flash: String
+        debt: Object,
+        flash: Object
     },
     data() {
         return {

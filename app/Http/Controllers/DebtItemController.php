@@ -7,9 +7,7 @@ use App\Models\DebtItem;
 use App\Models\User;
 use Auth;
 use Exception;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Collection;
 use Inertia\Inertia;
 use Inertia\Response;
 use Redirect;
@@ -24,22 +22,16 @@ class DebtItemController extends Controller
         $user = Auth::user();
         $user->load('userDebt.creator');
 
-        $users = User::where('id', '!=', Auth::id())->get()->map(function (User $user) {
-            $debt = $user->userDebt;
-            $debtCollection = new Collection();
-            foreach ($debt as $debtItem) {
-                if ($debtItem->creator_id = Auth::id()) {
-                    $debtCollection->add($debtItem);
-                }
-            }
+        $users = User::where('id', '!=', Auth::id())->get();
 
-            $user->user_debt = $debtCollection;
-            return $user;
-        });
+        $debtItems = DebtItem::where('creator_id', Auth::id())
+            ->get()
+            ->groupBy('indebted_user');
 
         return Inertia::render('DebtManagement/Index', [
             'personal' => $user,
             'users' => $users,
+            'debt' => $debtItems
         ]);
     }
 
